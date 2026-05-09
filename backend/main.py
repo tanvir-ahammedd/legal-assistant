@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -20,14 +20,17 @@ documents = [
     {
         "title": "Employment Agreement",
         "content": "Employees have to provide a 30-day notice before resignation. Employers may terminate employment for misconduct.",
+        "summary": "Employees must give 30 days notice before resigning. Employers may terminate for misconduct.",
     },
     {
         "title": "Rental Contract",
         "content": "Renter monthly rent is 10000tk and have to pay it before the 5th day of every month. Lease termination requires written notice.",
+        "summary": "Monthly rent of 10000tk is due by the 5th and termination must be submitted in writing.",
     },
     {
         "title": "Privacy Policy",
         "content": "User data must remain confidential and can not be shared with third parties.",
+        "summary": "User data is confidential and can't be shared with third parties",
     },
 ]
 
@@ -40,31 +43,55 @@ def home():
 @app.post("/generate")
 def generate(data: Query):
 
-    text = data.query.strip().lower()
-    query_words = text.split()
+    try:
+        text = data.query.strip().lower()
+        query_words = text.split()
 
-    found = []
+        if not query_words:
+            raise HTTPException(
+                status_code=400,
+                detail="Query cannot be empty."
+            )
 
-    for item in documents:
+        matched_doc = None
+        max_score = 0
 
-        title = item["title"].lower()
-        content = item["content"].lower()
+        for item in documents:
 
-        if any(word in title or word in content for word in query_words):
+            title = item["title"].lower()
+            content = item["content"].lower()
 
-            found.append({
-                "title": item["title"],
-                "summary": item["content"]
-            })
+            score = 0
 
-    if len(found) == 0:
+            for word in query_words:
+                if word in title:
+                    score += 2
+
+                if word in content:
+                    score += 1
+
+            if score > max_score:
+                max_score = score
+                matched_doc = item
+
+        if max_score == 0:
+            return {
+                "success": False,
+                "message": "No matching document found"
+            }
 
         return {
-            "success": False,
-            "message": "No matching document found"
+            "success": True,
+            "results": [
+                {
+                    "title": matched_doc["title"],
+                    "summary": matched_doc["summary"]
+                }
+            ]
         }
-
-    return {
-        "success": True,
-        "results": found
-    }
+    
+    except HTTPException:
+        raise
+    except Exception:
+        raise HTTPException(status_code=500, detail="An unexpected error occurred.")
+    
