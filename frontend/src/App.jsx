@@ -35,7 +35,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-blue-50 flex justify-center items-start px-4 py-15">
+    <div className="min-h-screen bg-neutral-100 flex justify-center items-start px-4 py-15">
       <div className="w-full max-w-2xl bg-white shadow-2xl">
 
 
@@ -61,7 +61,7 @@ function App() {
               value={text}
               onChange={(e) => setText(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-              className="flex-1 bg-white border outline-none px-5 py-4 text-sm text-black placeholder-neutral-600 font-light"
+              className="flex-1 bg-white border border-neutral-300 outline-none px-5 py-4 text-sm text-neutral-900 placeholder-neutral-500 font-normal"
             />
             <button
               onClick={handleSearch}
@@ -99,13 +99,13 @@ function App() {
                 {results.map((item, index) => (
                   <div
                     key={index}
-                    className="border border-neutral-800 bg-white-200 mb-6 px-6 py-5 relative group"
+                    className="border border-neutral-300 bg-neutral-50 mb-6 px-6 py-5 relative group"
                   >
                     <span className="absolute left-0 top-0 bottom-0 w-0.5 bg-yellow-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></span>
-                    <h3 className="text-base font-semibold text-stone-200 mb-2 tracking-tight">
+                    <h3 className="text-base font-bold text-neutral-900 mb-2 tracking-tight">
                       {item.title}
                     </h3>
-                    <p className="text-sm text-neutral-500 leading-relaxed font-light">
+                    <p className="text-sm text-neutral-800 leading-relaxed font-normal">
                       {item.summary}
                     </p>
                   </div>
