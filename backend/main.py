@@ -23,7 +23,7 @@ documents = [
     },
     {
         "title": "Rental Contract",
-        "content": "Renter have to pay rent before the 5th day of every month. Lease termination requires written notice.",
+        "content": "Renter monthly rent is 10000tk and have to pay it before the 5th day of every month. Lease termination requires written notice.",
     },
     {
         "title": "Privacy Policy",
@@ -40,13 +40,17 @@ def home():
 @app.post("/generate")
 def generate(data: Query):
 
-    text = data.query.lower()
+    text = data.query.strip().lower()
+    query_words = text.split()
 
     found = []
 
     for item in documents:
 
-        if text in item["title"].lower() or text in item["content"].lower():
+        title = item["title"].lower()
+        content = item["content"].lower()
+
+        if any(word in title or word in content for word in query_words):
 
             found.append({
                 "title": item["title"],
