@@ -61,11 +61,11 @@ function App() {
               value={text}
               onChange={(e) => setText(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-              className="flex-1 bg-white border border-neutral-300 outline-none px-5 py-4 text-sm text-neutral-900 placeholder-neutral-500 font-normal"
+              className="flex-1 bg-white border border-neutral-300 rounded-xl outline-none px-5 py-4 text-sm text-neutral-900 placeholder-neutral-500 focus:ring-2 focus:ring-blue-200 focus:border-blue-400 transition-all duration-200"
             />
             <button
               onClick={handleSearch}
-              className="bg-blue-500 hover:bg-blue-800 text-white px-6 py-4 text-xs font-semibold tracking-widest uppercase transition-colors duration-200 cursor-pointer whitespace-nowrap"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-7 py-4 rounded-xl text-sm font-semibold transition-all duration-200 cursor-pointer whitespace-nowrap shadow-sm hover:shadow-md"
             >
               Search
             </button>
@@ -99,9 +99,8 @@ function App() {
                 {results.map((item, index) => (
                   <div
                     key={index}
-                    className="border border-neutral-300 bg-neutral-50 mb-6 px-6 py-5 relative group"
+                    className="border border-neutral-300 bg-neutral-50 rounded-2xl mb-6 px-6 py-5"
                   >
-                    <span className="absolute left-0 top-0 bottom-0 w-0.5 bg-yellow-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></span>
                     <h3 className="text-base font-bold text-neutral-900 mb-2 tracking-tight">
                       {item.title}
                     </h3>
